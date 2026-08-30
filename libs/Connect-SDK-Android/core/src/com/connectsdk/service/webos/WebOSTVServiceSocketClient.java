@@ -297,11 +297,13 @@ public class WebOSTVServiceSocketClient extends WebSocketClient implements Servi
     }
 
     @SuppressWarnings("unchecked")
-    protected void handleMessage(JSONObject message) {
-        Boolean shouldProcess = true;
+protected void handleMessage(JSONObject message) {
+    response_message = message.optString("type");
 
-        if (mListener != null)
-            shouldProcess = mListener.onReceiveMessage(message);
+    Boolean shouldProcess = true;
+
+    if (mListener != null)
+        shouldProcess = mListener.onReceiveMessage(message);
 
         if (!shouldProcess)
             return;
