@@ -27,7 +27,5 @@ public class AproveActivity extends AppCompatActivity {
         String value = editInput.getText().toString().trim();
         if (mTV != null) {
             mTV.sendPairingKey(value);
-            finish();
-        }
     }
 }
