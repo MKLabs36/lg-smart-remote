@@ -1,204 +1,116 @@
 package com.sensustech.lgremote.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MotionEvent;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.ScaleAnimation;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.connectsdk.device.ConnectableDevice;
-import com.connectsdk.service.capability.Launcher;
-import com.connectsdk.service.command.ServiceCommandError;
-import com.connectsdk.service.sessions.LaunchSession;
 import com.sensustech.lgremote.R;
 import com.sensustech.lgremote.SingletonTV;
-import com.sensustech.lgremote.utils.OnSwipeTouchListener;
-import com.connectsdk.service.capability.KeyControl.KeyCode;
 
 public class SwipeControlActivity extends AppCompatActivity {
-    TextView tv_swipe_check;
-    ConnectableDevice mTV;
-    boolean  mute_state;
-    public LaunchSession inputPickerSession;
+
+    private TextView tv_swipe_check;
+    private ConnectableDevice mTV;
+
+    private float lastX;
+    private float lastY;
+    private boolean moved;
+
+    private static final float POINTER_SPEED = 1.5f;
+    private static final float TAP_DISTANCE = 20f;
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_swipe_control);
-        ConstraintLayout constraint = findViewById(R.id.constraint);
-        tv_swipe_check = findViewById(R.id.textGesture);
-        final Animation anim = new ScaleAnimation(
-                1f, 1.075f, // Start and end values for the X axis scaling
-                1f, 1.075f, // Start and end values for the Y axis scaling
-                Animation.RELATIVE_TO_SELF, 0.5f, // Pivot point of X scaling
-                Animation.RELATIVE_TO_SELF, 0.5f); // Pivot point of Y scaling
-        anim.setFillAfter(true); // Needed to keep the result of the animation
-        anim.setDuration(100);
-        anim.setRepeatMode(Animation.REVERSE);
-        anim.setRepeatCount(1);
-        mute_state = false;
-        SingletonTV tv = com.sensustech.lgremote.SingletonTV.getInstance();
-        mTV = tv.getTV();
-        constraint.setOnTouchListener(new OnSwipeTouchListener() {
-            public void onSwipeTop() {
-                tv_swipe_check.setText("Swipe Up");
-                tv_swipe_check.startAnimation(anim);
-                if (mTV != null ) {
-                    mTV.getVolumeControl().volumeUp(null);
-                }
-                else {
-                    Toast.makeText(getApplicationContext(), "Device is not connected", Toast.LENGTH_SHORT).show();
-                }
-            }
-            public void onSwipeRight() {
-                tv_swipe_check.setText("Swipe Right");
-                tv_swipe_check.startAnimation(anim);
-                if (mTV != null ) {
-                    mTV.getTVControl().channelUp(null);
-                }
-                else {
-                    Toast.makeText(getApplicationContext(), "Device is not connected", Toast.LENGTH_SHORT).show();
-                }
-            }
-            public void onSwipeLeft() {
-                tv_swipe_check.setText("Swipe Left");
-                tv_swipe_check.startAnimation(anim);
-                if (mTV != null ) {
-                    mTV.getTVControl().channelDown(null);
-                }
-                else {
-                    Toast.makeText(getApplicationContext(), "Device is not connected", Toast.LENGTH_SHORT).show();
-                }
-            }
-            public void onSwipeBottom() {
-                tv_swipe_check.setText("Swipe Down");
-                tv_swipe_check.startAnimation(anim);
-                if (mTV != null ) {
-                    mTV.getVolumeControl().volumeDown(null);
-                }
-                else {
-                    Toast.makeText(getApplicationContext(), "Device is not connected", Toast.LENGTH_SHORT).show();
-                }
-            }
-            public void onSingleTap() {
-                tv_swipe_check.setText("Tap");
-                tv_swipe_check.startAnimation(anim);
-                if (mTV != null ) {
-                    mTV.getKeyControl().sendKeyCode(KeyCode.DASH, null);
-                }
-                else {
-                    Toast.makeText(getApplicationContext(), "Device is not connected", Toast.LENGTH_SHORT).show();
-                }
-            }
-            public void onDoubleTap() {
-                tv_swipe_check.setText("Double Tap");
-                tv_swipe_check.startAnimation(anim);
-                if (mTV != null ) {
-                    if (mute_state == false){
-                        mute_state = true;
-                        mTV.getVolumeControl().setMute(true, null);
-                    }
-                    else {
-                        mute_state = false;
-                        mTV.getVolumeControl().setMute(false, null);
-                    }
-                }
-                else {
-                    Toast.makeText(getApplicationContext(), "Device is not connected", Toast.LENGTH_SHORT).show();
-                }
-            }
-            public void onLongPress() {
-                tv_swipe_check.setText("Long Press");
-                tv_swipe_check.startAnimation(anim);
-                if (mTV != null ) {
-                    mTV.getExternalInputControl().launchInputPicker(new Launcher.AppLaunchListener() {
-                        public void onError(ServiceCommandError error) { }
 
-                        public void onSuccess(LaunchSession object) {
-                            inputPickerSession = object;
+        View touchpad = findViewById(R.id.constraint);
+        tv_swipe_check = findViewById(R.id.textGesture);
+
+        SingletonTV tv = SingletonTV.getInstance();
+        mTV = tv.getTV();
+
+        touchpad.setOnTouchListener(new View.OnTouchListener() {
+
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+
+                if (mTV == null) {
+                    mTV = SingletonTV.getInstance().getTV();
+                }
+
+                switch (event.getActionMasked()) {
+
+                    case MotionEvent.ACTION_DOWN:
+                        lastX = event.getX();
+                        lastY = event.getY();
+                        moved = false;
+                        return true;
+
+                    case MotionEvent.ACTION_MOVE:
+
+                        if (event.getPointerCount() != 1) {
+                            return true;
                         }
-                    });
+
+                        float currentX = event.getX();
+                        float currentY = event.getY();
+
+                        float dx = currentX - lastX;
+                        float dy = currentY - lastY;
+
+                        if (Math.abs(dx) > 0 || Math.abs(dy) > 0) {
+                            moved = true;
+
+                            if (mTV != null) {
+                                mTV.getMouseControl().move(
+                                        dx * POINTER_SPEED,
+                                        dy * POINTER_SPEED
+                                );
+                            }
+
+                            lastX = currentX;
+                            lastY = currentY;
+                        }
+
+                        return true;
+
+                    case MotionEvent.ACTION_UP:
+
+                        float totalX = event.getX() - lastX;
+                        float totalY = event.getY() - lastY;
+
+                        if (!moved ||
+                                (Math.abs(totalX) < TAP_DISTANCE &&
+                                 Math.abs(totalY) < TAP_DISTANCE)) {
+
+                            if (mTV != null) {
+                                mTV.getMouseControl().click();
+                                tv_swipe_check.setText("OK");
+                            } else {
+                                Toast.makeText(
+                                        getApplicationContext(),
+                                        "Device is not connected",
+                                        Toast.LENGTH_SHORT
+                                ).show();
+                            }
+                        }
+
+                        return true;
+
+                    case MotionEvent.ACTION_CANCEL:
+                        return true;
                 }
-                else {
-                    Toast.makeText(getApplicationContext(), "Device is not connected", Toast.LENGTH_SHORT).show();
-                }
-            }
-            public void onTwoFingersSwipeTop() {
-                tv_swipe_check.setText("Swipe Up (2 fingers)");
-                tv_swipe_check.startAnimation(anim);
-                if (mTV != null ) {
-//                    mTV.getKeyControl().sendKeyCode(KeyCode.DASH, null);
-                }
-                else {
-                    Toast.makeText(getApplicationContext(), "Device is not connected", Toast.LENGTH_SHORT).show();
-                }
-            }
-            public void onTwoFingersSwipeRight() {
-                tv_swipe_check.setText("Swipe Right (2 fingers)");
-                tv_swipe_check.startAnimation(anim);
-                if (mTV != null ) {
-//                    mTV.getKeyControl().sendKeyCode(KeyCode.DASH, null);
-                }
-                else {
-                    Toast.makeText(getApplicationContext(), "Device is not connected", Toast.LENGTH_SHORT).show();
-                }
-            }
-            public void onTwoFingersSwipeLeft() {
-                tv_swipe_check.setText("Swipe Left (2 fingers)");
-                tv_swipe_check.startAnimation(anim);
-                if (mTV != null ) {
-//                    mTV.getKeyControl().sendKeyCode(KeyCode.DASH, null);
-                }
-                else {
-                    Toast.makeText(getApplicationContext(), "Device is not connected", Toast.LENGTH_SHORT).show();
-                }
-            }
-            public void onTwoFingersSwipeBottom() {
-                tv_swipe_check.setText("Swipe Down (2 fingers)");
-                tv_swipe_check.startAnimation(anim);
-                if (mTV != null ) {
-//                    mTV.getKeyControl().sendKeyCode(KeyCode.DASH, null);
-                }
-                else {
-                    Toast.makeText(getApplicationContext(), "Device is not connected", Toast.LENGTH_SHORT).show();
-                }
-            }
-            public void onTwoFingersSingleTap() {
-                tv_swipe_check.setText("Tap (2 fingers)");
-                tv_swipe_check.startAnimation(anim);
-                if (mTV != null ) {
-                    mTV.getKeyControl().sendKeyCode(KeyCode.ENTER, null);
-                }
-                else {
-                    Toast.makeText(getApplicationContext(), "Device is not connected", Toast.LENGTH_SHORT).show();
-                }
-            }
-            public void onTwoFingersDoubleTap() {
-                tv_swipe_check.setText("Double Tap (2 fingers)");
-                tv_swipe_check.startAnimation(anim);
-                if (mTV != null ) {
-//                    mTV.getKeyControl().sendKeyCode(KeyCode.ENTER, null);
-                }
-                else {
-                    Toast.makeText(getApplicationContext(), "Device is not connected", Toast.LENGTH_SHORT).show();
-                }
-            }
-            public void onTwoFingersLongPress() {
-                tv_swipe_check.setText("Long Press (2 fingers)");
-                tv_swipe_check.startAnimation(anim);
-                if (mTV != null ) {
-//                    mTV.getKeyControl().sendKeyCode(KeyCode.ENTER, null);
-                }
-                else {
-                    Toast.makeText(getApplicationContext(), "Device is not connected", Toast.LENGTH_SHORT).show();
-                }
+
+                return true;
             }
         });
     }
@@ -212,7 +124,10 @@ public class SwipeControlActivity extends AppCompatActivity {
     }
 
     public void helpClick(View view) {
-        Intent intent = new Intent(SwipeControlActivity.this, GesturesActivity.class);
+        Intent intent = new Intent(
+                SwipeControlActivity.this,
+                GesturesActivity.class
+        );
         startActivity(intent);
     }
 }
