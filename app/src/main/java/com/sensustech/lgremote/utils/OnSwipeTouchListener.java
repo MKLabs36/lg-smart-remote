@@ -88,53 +88,27 @@ public class OnSwipeTouchListener implements View.OnTouchListener {
                 startX = event.getX(0);
                 break;
             case MotionEvent.ACTION_UP:
-                if (pointers_count < 2) {
-                    handler.removeCallbacks(mLongPressedOneFinger);
-                    if (Math.abs(startY - event.getY(0)) > Math.abs(startX - event.getX(0))) {
-                        if(Math.abs(startY - event.getY(0)) > TRESHOLD)
-                        {
-                            if(startY > event.getY(0))
-                            {
-                                pointers_count = 0;
-//                                Log.d("action", "swipe up");
-                                onSwipeTop();
-                            }
-                            else
-                            {
-                                pointers_count = 0;
-//                                Log.d("action", "swipe down");
-                                onSwipeBottom();
-                            }
-                        }
-                        else {
-                            oneFingerUpHandler(event);
-                        }
-                    }
-                    else {
-                        if(Math.abs(startX - event.getX(0)) > TRESHOLD)
-                        {
-                            if(startX > event.getX(0))
-                            {
-                                pointers_count = 0;
-//                                Log.d("action", "swipe left");
-                                onSwipeLeft();
-                            }
-                            else {
-                                pointers_count = 0;
-//                                Log.d("action", "swipe right");
-                                onSwipeRight();
-                            }
-                        }
-                        else {
-                            oneFingerUpHandler(event);
-                        }
-                    }
-                }
-                else {
-                    handler.removeCallbacks(mLongPressedTwoFingers);
-                    pointers_count = 0;
-                }
-                break;
+                handler.removeCallbacks(mLongPressedOneFinger);
+                handler.removeCallbacks(mLongPressedTwoFingers);
+
+    float deltaX = Math.abs(startX - event.getX(0));
+    float deltaY = Math.abs(startY - event.getY(0));
+
+    // If the finger moved enough, it was a movement/swipe.
+    // Do NOT treat releasing the finger as a tap.
+    if (deltaX > TRESHOLD || deltaY > TRESHOLD) {
+        pointers_count = 0;
+        taps = 0;
+        handler.removeCallbacks(mDoublePressOneFinger);
+        handler.removeCallbacks(mDoublePressTwoFingers);
+        break;
+    }
+    if (pointers_count < 2) {
+        oneFingerUpHandler(event);
+    } else {
+        pointers_count = 0;
+    }
+    break;
             case MotionEvent.ACTION_POINTER_DOWN:
                 handler.removeCallbacks(mLongPressedOneFinger);
                 handler.postDelayed(mLongPressedTwoFingers, ViewConfiguration.getLongPressTimeout());
