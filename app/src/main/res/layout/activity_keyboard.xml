@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -13,63 +14,137 @@
         android:layout_height="50dp"
         android:layout_marginTop="10dp"
         android:layout_marginEnd="10dp"
-        android:layout_marginRight="10dp"
         android:clickable="true"
+        android:focusable="true"
         android:foreground="@drawable/ripple_effect"
         android:onClick="closeClick"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/b_close"
-        android:focusable="true" />
+        app:srcCompat="@drawable/b_close" />
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="70dp"
+    <EditText
+        android:id="@+id/editInput"
+        android:layout_width="0dp"
+        android:layout_height="60dp"
         android:layout_marginStart="20dp"
-        android:layout_marginLeft="20dp"
+        android:layout_marginTop="75dp"
         android:layout_marginEnd="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginBottom="30dp"
         android:background="@drawable/keyboard_text_field"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:ems="13"
+        android:fontFamily="@font/rubik_regular"
+        android:hint="Type and press send"
+        android:inputType="text"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"
+        android:textColor="#ffffff"
+        android:textColorHint="#ffffff"
+        android:textCursorDrawable="@null"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent" />
 
-        <EditText
-            android:id="@+id/editInput"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_alignParentLeft="true"
-            android:layout_marginLeft="30dp"
-            android:layout_marginStart="20dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_toStartOf="@+id/buttonSend"
-            android:layout_toLeftOf="@+id/buttonSend"
-            android:background="@android:color/transparent"
-            android:ems="13"
-            android:fontFamily="@font/rubik_regular"
-            android:hint="Type and press sent"
-            android:inputType="textPersonName"
-            android:textColor="#ffffff"
-            android:textColorHighlight="@color/colorPremium"
-            android:textColorHint="#ffffff"
-            android:textCursorDrawable="@null" />
+    <LinearLayout
+        android:id="@+id/keyboardRows"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="15dp"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/editInput">
 
-        <ImageView
-            android:id="@+id/buttonSend"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_alignParentRight="true"
-            android:layout_marginTop="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginBottom="10dp"
-            android:adjustViewBounds="true"
-            android:clickable="true"
-            android:foreground="@drawable/ripple_effect_light"
-            android:onClick="sendClick"
-            app:srcCompat="@drawable/keyboard_b_next" />
-    </RelativeLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:orientation="horizontal">
+
+            <Button android:id="@+id/keyA" android:text="A" style="@style/Widget.AppCompat.Button" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" />
+            <Button android:id="@+id/keyB" android:text="B" style="@style/Widget.AppCompat.Button" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" />
+            <Button android:id="@+id/keyC" android:text="C" style="@style/Widget.AppCompat.Button" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" />
+            <Button android:id="@+id/keyD" android:text="D" style="@style/Widget.AppCompat.Button" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" />
+            <Button android:id="@+id/keyE" android:text="E" style="@style/Widget.AppCompat.Button" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" />
+            <Button android:id="@+id/keyF" android:text="F" style="@style/Widget.AppCompat.Button" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" />
+            <Button android:id="@+id/keyG" android:text="G" style="@style/Widget.AppCompat.Button" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:orientation="horizontal">
+
+            <Button android:id="@+id/keyH" android:text="H" style="@style/Widget.AppCompat.Button" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" />
+            <Button android:id="@+id/keyI" android:text="I" style="@style/Widget.AppCompat.Button" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" />
+            <Button android:id="@+id/keyJ" android:text="J" style="@style/Widget.AppCompat.Button" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" />
+            <Button android:id="@+id/keyK" android:text="K" style="@style/Widget.AppCompat.Button" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" />
+            <Button android:id="@+id/keyL" android:text="L" style="@style/Widget.AppCompat.Button" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" />
+            <Button android:id="@+id/keyM" android:text="M" style="@style/Widget.AppCompat.Button" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" />
+            <Button android:id="@+id/keyN" android:text="N" style="@style/Widget.AppCompat.Button" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:orientation="horizontal">
+
+            <Button android:id="@+id/keyO" android:text="O" style="@style/Widget.AppCompat.Button" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" />
+            <Button android:id="@+id/keyP" android:text="P" style="@style/Widget.AppCompat.Button" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" />
+            <Button android:id="@+id/keyQ" android:text="Q" style="@style/Widget.AppCompat.Button" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" />
+            <Button android:id="@+id/keyR" android:text="R" style="@style/Widget.AppCompat.Button" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" />
+            <Button android:id="@+id/keyS" android:text="S" style="@style/Widget.AppCompat.Button" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" />
+            <Button android:id="@+id/keyT" android:text="T" style="@style/Widget.AppCompat.Button" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" />
+            <Button android:id="@+id/keyU" android:text="U" style="@style/Widget.AppCompat.Button" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:orientation="horizontal">
+
+            <Button android:id="@+id/keyV" android:text="V" style="@style/Widget.AppCompat.Button" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" />
+            <Button android:id="@+id/keyW" android:text="W" style="@style/Widget.AppCompat.Button" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" />
+            <Button android:id="@+id/keyX" android:text="X" style="@style/Widget.AppCompat.Button" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" />
+            <Button android:id="@+id/keyY" android:text="Y" style="@style/Widget.AppCompat.Button" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" />
+            <Button android:id="@+id/keyZ" android:text="Z" style="@style/Widget.AppCompat.Button" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" />
+            <Button android:id="@+id/keyDelete" android:text="⌫" style="@style/Widget.AppCompat.Button" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/keySpace"
+                android:text="SPACE"
+                style="@style/Widget.AppCompat.Button"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="2" />
+
+            <Button
+                android:id="@+id/keyEnter"
+                android:text="ENTER"
+                style="@style/Widget.AppCompat.Button"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1" />
+
+            <Button
+                android:id="@+id/buttonSend"
+                android:text="SEND"
+                style="@style/Widget.AppCompat.Button"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1" />
+
+        </LinearLayout>
+
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
