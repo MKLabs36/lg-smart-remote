@@ -164,14 +164,14 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     }
 
     public void keyOkClick(View view) {
-        if (mTV != null){
-            mTV.getKeyControl().ok(null);
-            testResponse =  new TestResponseObject(true, TestResponseObject.SuccessCode, TestResponseObject.VolumeUp);
-        }
-        else {
-            Toast.makeText(getApplicationContext(), "Device is not connected", Toast.LENGTH_SHORT).show();
-        }
+    if (mTV != null){
+        mTV.getKeyControl().sendKeyCode(KeyCode.ENTER, null);
+        testResponse = new TestResponseObject(true, TestResponseObject.SuccessCode, TestResponseObject.VolumeUp);
     }
+    else {
+        Toast.makeText(getApplicationContext(), "Device is not connected", Toast.LENGTH_SHORT).show();
+    }
+}
 
     public void keyHomeClick(View view) {
         if (mTV != null){
