@@ -23,7 +23,7 @@ public class SwipeControlActivity extends AppCompatActivity {
     private float lastY;
     private boolean moved;
 
-    private static final float POINTER_SPEED = 1.5f;
+    private static final float POINTER_SPEED = 0.5f;
     private static final float TAP_DISTANCE = 20f;
 
     @SuppressLint("ClickableViewAccessibility")
