@@ -59,9 +59,12 @@ public class KeyboardActivity extends AppCompatActivity {
 };
 
 for (Button button : letterButtons) {
-    button.setOnClickListener(v -> {
-        Button clickedButton = (Button) v;
-        text.append(clickedButton.getText().toString());
+    button.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            Button clickedButton = (Button) v;
+            text.append(clickedButton.getText().toString());
+        }
     });
 }
 
