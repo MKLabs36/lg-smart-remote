@@ -68,19 +68,30 @@ for (Button button : letterButtons) {
     });
 }
 
-findViewById(R.id.keySpace).setOnClickListener(v -> text.append(" "));
-
-findViewById(R.id.keyDelete).setOnClickListener(v -> {
-    int position = text.getSelectionStart();
-    if (position > 0) {
-        text.delete(position - 1, position);
+findViewById(R.id.keySpace).setOnClickListener(new View.OnClickListener() {
+    @Override
+    public void onClick(View v) {
+        text.append(" ");
     }
 });
 
-findViewById(R.id.keyEnter).setOnClickListener(v -> {
-    if (mTV != null) {
-        mTV.getTextInputControl().sendEnter();
-        finish();
+findViewById(R.id.keyDelete).setOnClickListener(new View.OnClickListener() {
+    @Override
+    public void onClick(View v) {
+        int position = text.getSelectionStart();
+        if (position > 0) {
+            text.delete(position - 1, position);
+        }
+    }
+});
+
+findViewById(R.id.keyEnter).setOnClickListener(new View.OnClickListener() {
+    @Override
+    public void onClick(View v) {
+        if (mTV != null) {
+            mTV.getTextInputControl().sendEnter();
+            finish();
+        }
     }
 });
         text.addTextChangedListener(new TextWatcher() {
