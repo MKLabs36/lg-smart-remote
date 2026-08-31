@@ -80,7 +80,7 @@ findViewById(R.id.keyDelete).setOnClickListener(new View.OnClickListener() {
     public void onClick(View v) {
         int position = text.getSelectionStart();
         if (position > 0) {
-            text.delete(position - 1, position);
+            text.getText().delete(position - 1, position);
         }
     }
 });
