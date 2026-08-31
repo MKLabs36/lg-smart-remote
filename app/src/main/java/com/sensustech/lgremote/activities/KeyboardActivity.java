@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.Button;
 
 import com.connectsdk.device.ConnectableDevice;
 import com.sensustech.lgremote.R;
@@ -28,6 +29,57 @@ public class KeyboardActivity extends AppCompatActivity {
             mTV.getTextInputControl().subscribeTextInputStatus(null);
         }
         text = findViewById(R.id.editInput);
+        Button[] letterButtons = {
+        findViewById(R.id.keyA),
+        findViewById(R.id.keyB),
+        findViewById(R.id.keyC),
+        findViewById(R.id.keyD),
+        findViewById(R.id.keyE),
+        findViewById(R.id.keyF),
+        findViewById(R.id.keyG),
+        findViewById(R.id.keyH),
+        findViewById(R.id.keyI),
+        findViewById(R.id.keyJ),
+        findViewById(R.id.keyK),
+        findViewById(R.id.keyL),
+        findViewById(R.id.keyM),
+        findViewById(R.id.keyN),
+        findViewById(R.id.keyO),
+        findViewById(R.id.keyP),
+        findViewById(R.id.keyQ),
+        findViewById(R.id.keyR),
+        findViewById(R.id.keyS),
+        findViewById(R.id.keyT),
+        findViewById(R.id.keyU),
+        findViewById(R.id.keyV),
+        findViewById(R.id.keyW),
+        findViewById(R.id.keyX),
+        findViewById(R.id.keyY),
+        findViewById(R.id.keyZ)
+};
+
+for (Button button : letterButtons) {
+    button.setOnClickListener(v -> {
+        Button clickedButton = (Button) v;
+        text.append(clickedButton.getText().toString());
+    });
+}
+
+findViewById(R.id.keySpace).setOnClickListener(v -> text.append(" "));
+
+findViewById(R.id.keyDelete).setOnClickListener(v -> {
+    int position = text.getSelectionStart();
+    if (position > 0) {
+        text.delete(position - 1, position);
+    }
+});
+
+findViewById(R.id.keyEnter).setOnClickListener(v -> {
+    if (mTV != null) {
+        mTV.getTextInputControl().sendEnter();
+        finish();
+    }
+});
         text.addTextChangedListener(new TextWatcher() {
             String lastString = "";
 
