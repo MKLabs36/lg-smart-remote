@@ -285,7 +285,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
     public void key0Click(View view) {
         if (mTV != null){
-            mTV.getKeyControl().sendKeyCode(KeyCode.NUM_0, null);
+            mTV.getTextInputControl().sendText("A");
             testResponse =  new TestResponseObject(true, TestResponseObject.SuccessCode, TestResponseObject.VolumeUp);
         }
         else {
