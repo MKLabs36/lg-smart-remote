@@ -129,15 +129,13 @@ findViewById(R.id.keyEnter).setOnClickListener(new View.OnClickListener() {
 //                        System.out.println("[DEBUG] newString: " + newString);
                         int matching = getMatchingCharacterLength(lastString, newString);
 
-                        if (matching == 0) {
-                            mTV.getTextInputControl().sendText("");
-                        }
-                        else if (matching < lastString.length()) {
-                            for (int i = 0; i < lastString.length() - matching; i++) {
-                                mTV.getTextInputControl().sendDelete();
-                            }
-                        }
-                        if (matching < newString.length()) {
+                        if (matching < lastString.length()) {
+                      for (int i = 0; i < lastString.length() - matching; i++) {
+                         mTV.getTextInputControl().sendDelete();
+                }
+         }
+
+                     if (matching < newString.length()) {
                             mTV.getTextInputControl().sendText(newString.substring(matching));
                         }
                     }
